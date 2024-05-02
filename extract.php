@@ -2,7 +2,7 @@
 $get_city = $_GET['city'];
 
 function fetchWeatherData($city) {
-    $url_zurich = "https://api.open-meteo.com/v1/forecast?latitude=47.3667&longitude=8.55&minutely_15=temperature_2m,apparent_temperature,precipitation,wind_speed_10m&forecast_days=1";
+  $url_zurich = "https://api.open-meteo.com/v1/forecast?latitude=47.3667&longitude=8.55&minutely_15=temperature_2m,apparent_temperature,precipitation,wind_speed_10m&forecast_days=1";
     $url_rotterdam = "https://api.open-meteo.com/v1/forecast?latitude=51.9225&longitude=4.4792&minutely_15=temperature_2m,apparent_temperature,precipitation,wind_speed_10m&forecast_days=1";
     $url_berlin = "https://api.open-meteo.com/v1/forecast?latitude=52.5244&longitude=13.4105&minutely_15=temperature_2m,apparent_temperature,precipitation,wind_speed_10m&forecast_days=1";
 
@@ -30,8 +30,6 @@ function fetchWeatherData($city) {
     curl_close($ch);
 
     // Dekodiert die JSON-Antwort und gibt Daten zurück
-   // return json_decode($response, true);
-  // echo $response;
   return json_decode($response,true);
 
 }

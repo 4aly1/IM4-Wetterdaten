@@ -32,9 +32,6 @@ $transformedData = [
 
 // Encode transformed data to JSON
 $jsonData = json_encode($transformedData, JSON_PRETTY_PRINT);
-
-// Return JSON data
 return $jsonData;
 
 ?>
-

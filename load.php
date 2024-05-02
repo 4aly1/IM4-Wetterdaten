@@ -16,7 +16,7 @@ try {
     $pdo = new PDO($dsn, $username, $password, $options);
 
     // SQL-Query mit Platzhaltern für das Einfügen von Daten
-    $sql = "INSERT INTO wetterdaten (location, temperature_celsius, date) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO wetterdaten (location, latitude, longitude, temperature_celsius,wind_speed_10m,precipitation,apparent_temperature, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Bereitet die SQL-Anweisung vor
     $stmt = $pdo->prepare($sql);
@@ -38,4 +38,3 @@ try {
     die("Verbindung zur Datenbank konnte nicht hergestellt werden: " . $e->getMessage());
 }
 ?>
-
