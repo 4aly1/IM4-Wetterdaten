@@ -7,9 +7,7 @@ let url = 'https://536620-3.web.fhgr.ch/php/unload.php';
 //funktion erstellen für weiter unten = Daten holen von der URL und geben es mit return zurück
 async function fetchData(url) {
   try {
-    let response = await fetch(url, {
-      mode:  'no-cors',
-    });
+    let response = await fetch(url);
     let dbData = await response.json();
     return (dbData);
   }
@@ -208,9 +206,7 @@ function updateButtonStates(city) {
 }
 
 async function loadCity(city) {
-  console.log("loading city", city)
   let dbData = await fetchData(url);
-  console.log(dbData)
   let cityLast14Days = dbData
       .filter(d => d.location.toLowerCase() === city.toLowerCase() && new Date(d.date) > new Date(Date.now() - 12096e5));
   

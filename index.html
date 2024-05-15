@@ -1,110 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- bootstrap -->
+    <title>Wetter-App Startseite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f8ff; /* Hellblau */
+            color: #0056b3; /* Dunkelblau */
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Bootstrap primäre Blau-Farbe */
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Dunkleres Blau beim Hover */
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Willkommen zur Wetter-App</h1>
+        <p>Starte jetzt und erfahre mehr über das Wetter in deiner Region.</p>
+        <a href="/app.html" class="btn btn-primary">Los gehts</a>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<body>
-    <style>
-        #content {
-            justify-items: center;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            width: 80%;
-            max-width: 65rem;
-            margin: auto;
-            margin-top: 5rem;
-            margin-bottom: 6rem;
-        }
-
-        .filter-container {
-            display: flex;
-            gap: 1rem;
-        }
-    </style>
-    <header>
-
-    </header>
-    <main>
-        <div id="content">
-            <div class="filter-container">
-                <button id="btn-zurich" onclick="loadCity('Zurich')" type="button" class="btn btn-light">Zurich</button>
-                <button id="btn-rotterdam" onclick="loadCity('Rotterdam')" type="button" class="btn btn-light">Rotterdam</button>
-                <button id="btn-berlin" onclick="loadCity('Berlin')" type="button" class="btn btn-light">Berlin</button>
-            </div>
-            <div id="city_card">
-                <div class="card">
-                    <img id="city-img" src="https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 id="city-title" class="card-title">Wird geladen</h5>
-                        <p class="card-text">
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <label>Temperature</label>
-                            <label id="Temperature"></label>
-                        </div>
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <label>Apparent Temperature</label>
-                            <label id="ApparentTemperature"></label>
-                        </div>
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <label>Precipitation</label>
-                            <label id="Prec"></label>
-                        </div>
-                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                            <label>Wind Speed</label>
-                            <label id="Wind"></label>
-                        </div>
-                        </p>
-                    </div>
-
-                    <div class="card-body">
-                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                              <div class="carousel-item active">
-                                <canvas id="Temp_Chart"></canvas>
-                              </div>
-                              <div class="carousel-item">
-                                <canvas id="Wind_Chart"></canvas>
-                              </div>
-                              <div class="carousel-item">
-                                <canvas id="Perc_Chart"></canvas>
-
-                              </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Next</span>
-                            </button>
-                          </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        </div>
-
-    </main>
-    <footer>
-
-    </footer>
-    <script src="./script.js"></script>
 </body>
-
 </html>
