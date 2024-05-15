@@ -15,81 +15,91 @@
 </head>
 
 <body>
+    <style>
+        #content {
+            justify-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            width: 80%;
+            max-width: 65rem;
+            margin: auto;
+            margin-top: 5rem;
+            margin-bottom: 6rem;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+        }
+    </style>
     <header>
 
     </header>
     <main>
-      
-            <div id="berlin_card">
-                <div class="card" style="width:80%; min-width: 24rem;margin:auto; margin-bottom: 20px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Cityscape_Berlin.jpg/1024px-Cityscape_Berlin.jpg"
+        <div id="content">
+            <div class="filter-container">
+                <button id="btn-zurich" onclick="loadCity('Zurich')" type="button" class="btn btn-light">Zurich</button>
+                <button id="btn-rotterdam" onclick="loadCity('Rotterdam')" type="button" class="btn btn-light">Rotterdam</button>
+                <button id="btn-berlin" onclick="loadCity('Berlin')" type="button" class="btn btn-light">Berlin</button>
+            </div>
+            <div id="city_card">
+                <div class="card">
+                    <img id="city-img" src="https://cdn.pixabay.com/animation/2023/05/02/04/29/04-29-06-428_512.gif"
                         class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Berlin</h5>
+                        <h5 id="city-title" class="card-title">Wird geladen</h5>
                         <p class="card-text">
                         <div style="display: flex; flex-direction: row; justify-content: space-between;">
                             <label>Temperature</label>
-                            <label id="Berlin_Temperature"></label>
+                            <label id="Temperature"></label>
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: space-between;">
                             <label>Apparent Temperature</label>
-                            <label id="Berlin_ApparentTemperature"></label>
+                            <label id="ApparentTemperature"></label>
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: space-between;">
                             <label>Precipitation</label>
-                            <label id="Berlin_Prec"></label>
+                            <label id="Prec"></label>
                         </div>
                         <div style="display: flex; flex-direction: row; justify-content: space-between;">
                             <label>Wind Speed</label>
-                            <label id="Berlin_Wind"></label>
+                            <label id="Wind"></label>
                         </div>
                         </p>
                     </div>
 
                     <div class="card-body">
-                        <canvas id="Berlin_Wetterdaten_Chart"></canvas>
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <canvas id="Temp_Chart"></canvas>
+                              </div>
+                              <div class="carousel-item">
+                                <canvas id="Wind_Chart"></canvas>
+                              </div>
+                              <div class="carousel-item">
+                                <canvas id="Perc_Chart"></canvas>
+
+                              </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
 
                     </div>
                 </div>
 
             </div>
-
-     
-        <div id="zurich_card">
-            <div class="card" style="width:80%; min-width: 24rem;margin:auto">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Altstadt_Z%C3%BCrich_2015.jpg/1024px-Altstadt_Z%C3%BCrich_2015.jpg"
-                    class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Zürich</h5>
-                    <p class="card-text">
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <label>Temperature</label>
-                        <label id="Zurich_Temperature"></label>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <label>Apparent Temperature</label>
-                        <label id="Zurich_ApparentTemperature"></label>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <label>Precipitation</label>
-                        <label id="Zurich_Prec"></label>
-                    </div>
-                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                        <label>Wind Speed</label>
-                        <label id="Zurich_Wind"></label>
-                    </div>
-                    </p>
-                </div>
-
-                <div class="card-body">
-                    <canvas id="Zurich_Wetterdaten_Chart"></canvas>
-
-                </div>
-            </div>
-
+        </div>
         </div>
 
-        </div>
     </main>
     <footer>
 

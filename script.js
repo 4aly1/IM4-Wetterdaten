@@ -17,14 +17,32 @@ async function fetchData(url) {
     console.log(error);
   }
 }
-//DBData wird übergeben inkl. title, canvas ID wo es hinkommt
-//Chart.js Teil
-function renderChart(dbData, title, canvasId) {
+let currentTempChart = undefined;
+let currentWindChart = undefined;
+let currentPercChart = undefined;
+
+function renderTempChart(dbData, title) {
+  if (currentTempChart) {
+    currentTempChart.destroy();
+  }
+
   let data = dbData.map(d => ({ x: d.date, y: parseFloat(d.temperature_celsius) }))
-  console.log(data)
+  
+  const groupedData = data.reduce((acc, { x, y }) => {
+    acc[x] = acc[x] || [];
+    acc[x].push(y);
+    return acc;
+  }, {});
+  
+  // Step 2: Calculate averages
+  const averages = Object.keys(groupedData).map(date => ({
+    x: date,
+    y: groupedData[date].reduce((sum, curr) => sum + curr, 0) / groupedData[date].length
+  }));
+
   let chartJsData = {
     datasets: [
-      { data: data }
+      { data: averages, label: "Temperature (Celsius)" }
     ]
   };
 
@@ -45,32 +63,163 @@ function renderChart(dbData, title, canvasId) {
     },
   };
 //Ab hier wird die Daten ins Html geschrieben
-  let Wetterdaten = document.getElementById(canvasId)
-  new Chart(Wetterdaten, config);
+  let tempCanvas = document.getElementById("Temp_Chart")
+  currentTempChart= new Chart(tempCanvas, config);
+
+}
+
+function renderWindChart(dbData, title) {
+  if (currentWindChart) {
+    currentWindChart.destroy();
+  }
+
+  let data = dbData.map(d => ({ x: d.date, y: parseFloat(d.wind_speed_10m) }))
+  const groupedData = data.reduce((acc, { x, y }) => {
+    acc[x] = acc[x] || [];
+    acc[x].push(y);
+    return acc;
+  }, {});
+  
+  // Step 2: Calculate averages
+  const averages = Object.keys(groupedData).map(date => ({
+    x: date,
+    y: groupedData[date].reduce((sum, curr) => sum + curr, 0) / groupedData[date].length
+  }));
+  
+  let chartJsData = {
+    datasets: [
+      { data: averages, label: "Wind Speed (km/h)" }
+    ]
+  };
+
+  const config = {
+    type: 'line',
+    data: chartJsData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: title
+        }
+      }
+    },
+  };
+//Ab hier wird die Daten ins Html geschrieben
+  let tempCanvas = document.getElementById("Wind_Chart")
+  currentWindChart= new Chart(tempCanvas, config);
+
+}
+function renderPercChart(dbData, title) {
+  if (currentPercChart) {
+    currentPercChart.destroy();
+  }
+
+  let data = dbData.map(d => ({ x: d.date, y: parseFloat(d.precipitation) }))
+  const groupedData = data.reduce((acc, { x, y }) => {
+    acc[x] = acc[x] || [];
+    acc[x].push(y);
+    return acc;
+  }, {});
+  
+  // Step 2: Calculate averages
+  const averages = Object.keys(groupedData).map(date => ({
+    x: date,
+    y: groupedData[date].reduce((sum, curr) => sum + curr, 0) / groupedData[date].length
+  }));
+  
+  
+  let chartJsData = {
+    datasets: [
+      { data: averages, label: "Precipitation (mm)"  }
+    ]
+  };
+
+  const config = {
+    type: 'line',
+    data: chartJsData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: title
+        }
+      }
+    },
+  };
+//Ab hier wird die Daten ins Html geschrieben
+  let tempCanvas = document.getElementById("Perc_Chart")
+  currentPercChart= new Chart(tempCanvas, config);
 
 }
 //Aktuelle Daten werden abgefragt und ins HTML geschrieben
 function renderLiveData(dbData, city) {
   let zurichNow = dbData[dbData.length - 1]
-  document.getElementById(city +"_Temperature").innerHTML = zurichNow.temperature_celsius
-  document.getElementById(city +"_ApparentTemperature").innerHTML = zurichNow.apparent_temperature
-  document.getElementById(city +"_Prec").innerHTML = zurichNow.precipitation
-  document.getElementById(city +"_Wind").innerHTML = zurichNow.wind_speed_10m
+  document.getElementById("Temperature").innerHTML = zurichNow.temperature_celsius
+  document.getElementById("ApparentTemperature").innerHTML = zurichNow.apparent_temperature
+  document.getElementById("Prec").innerHTML = zurichNow.precipitation
+  document.getElementById("Wind").innerHTML = zurichNow.wind_speed_10m
+  let imageSrc = ""
+  if (city === "Zurich") {
+    imageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Altstadt_Z%C3%BCrich_2015.jpg/1024px-Altstadt_Z%C3%BCrich_2015.jpg"
+  } else if (city == "Berlin"){
+    imageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Cityscape_Berlin.jpg/1024px-Cityscape_Berlin.jpg"
+  } else {
+    imageSrc = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/De_Zalmhaven_I%2C_II_and_III_-_Rotterdam_-_View_from_the_Veerhaven.jpg/1920px-De_Zalmhaven_I%2C_II_and_III_-_Rotterdam_-_View_from_the_Veerhaven.jpg"
+  }
+  document.getElementById("city-img").src = imageSrc
+  document.getElementById("city-title").innerHTML = city
 }
 //Hier werden alle Datensätze abgefragt und nach gewünschten Daten gefiltert und die Funktion aufzurufen um es ins HTML zu schreiben
 async function init() {
-  let dbData = await fetchData(url);
-  let zurichLast14Days = dbData
-      .filter(d => d.location === "zurich" && new Date(d.date) > new Date(Date.now() - 12096e5));
-
-  renderChart(zurichLast14Days, 'Zürich letzte 14 Tage', 'Zurich_Wetterdaten_Chart');
-  renderLiveData(zurichLast14Days, 'Zurich')
-
-  let berlinLast14Days = dbData
-      .filter(d => d.location === "berlin" && new Date(d.date) > new Date(Date.now() - 12096e5));
-
-  renderChart(berlinLast14Days, 'Berlin letzte 14 Tage', 'Berlin_Wetterdaten_Chart');
-  renderLiveData(berlinLast14Days, 'Berlin')
+  loadCity("Zurich")
 }
+
+function updateButtonStates(city) {
+  let btnZh = document.getElementById("btn-zurich")
+  btnZh.classList.remove("btn-primary", "btn-light")
+ 
+  let btnRot = document.getElementById("btn-rotterdam")
+  btnRot.classList.remove("btn-primary", "btn-light")
+
+  let btnBerlin = document.getElementById("btn-berlin")
+  btnBerlin.classList.remove("btn-primary", "btn-light")
+  
+  if(city === "Zurich") {
+    btnZh.classList.add("btn-primary")
+    btnRot.classList.add("btn-light")
+    btnBerlin.classList.add("btn-light")
+  } else if (city === "Rotterdam") {
+    btnRot.classList.add("btn-primary")
+    btnBerlin.classList.add("btn-light")
+    btnZh.classList.add("btn-light")
+  } else {
+    btnBerlin.classList.add("btn-primary")
+    btnRot.classList.add("btn-light")
+    btnZh.classList.add("btn-light")
+  }
+}
+
+async function loadCity(city) {
+  console.log("loading city", city)
+  let dbData = await fetchData(url);
+  console.log(dbData)
+  let cityLast14Days = dbData
+      .filter(d => d.location.toLowerCase() === city.toLowerCase() && new Date(d.date) > new Date(Date.now() - 12096e5));
+  
+  renderLiveData(cityLast14Days, city)
+  renderTempChart(cityLast14Days, `Temperatur last 14 days`);
+  renderWindChart(cityLast14Days, `Wind speed last 14 days`);
+  renderPercChart(cityLast14Days, `Perception last 14 days`);
+  updateButtonStates(city);
+}
+
 
 init();
