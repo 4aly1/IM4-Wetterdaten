@@ -12,6 +12,7 @@ body {
 .logo-container svg {
     display: block; /* Ensure SVG is treated as a block element */
     margin: 0 auto; /* Center the SVG horizontally within its container */
+    margin-top: 50px;
 }
 
 #content {
@@ -22,7 +23,7 @@ body {
     width: 80%;
     max-width: 65rem;
     margin: auto;
-    margin-top: 5rem;
+    margin-top: 2rem;
     margin-bottom: 6rem;
     background-color: white;
     padding: 20px;
@@ -58,9 +59,4 @@ body {
 }
 
 .btn.loading::after {
-    content: "Loading...";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
   }
